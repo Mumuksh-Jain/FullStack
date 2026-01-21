@@ -3,67 +3,132 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student form</title>
-<style>
-    body {
-        font-family: Arial, sans-serif;
-        background-color: #f2f2f2;
-    }
+    <title>Student Form</title>
 
-    .form {
-        width: 250px;
-        margin: 40px auto;
-        padding: 20px;
-        background-color: white;
-        border: 1px solid black;
-    }
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+        }
 
-    label {
-        display: block;
-        margin-top: 10px;
-        font-weight: bold;
-        color: black;
-    }
+        .form {
+            width: 400px;
+            margin: 40px auto;
+            padding: 20px;
+            font-size: 1rem;
+            background-color: white;
+            border: 1px solid black;
+        }
 
-    input {
-        width: 100%;
-        padding: 6px;
-        margin-top: 5px;
-        border: 1px solid gray;
-        font-size: 14px;
-    }
+        label {
+            display: block;
+            margin-top: 10px;
+            font-weight: bold;
+        }
 
-    button {
-        width: 100%;
-        margin-top: 15px;
-        padding: 6px;
-        background-color: lightblue;
-        border: 1px solid black;
-        cursor: pointer;
-        font-size: 14px;
-    }
+        input {
+            width: 100%;
+            padding: 6px;
+            margin-top: 5px;
+            border: 1px solid gray;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
 
-    button:hover {
-        background-color: #add8e6;
-    }
-</style>
+        .error-input {
+            border: 2px solid red;
+        }
 
+        .error-text {
+            color: red;
+            font-size: 12px;
+            margin-top: 3px;
+            display: none;
+        }
 
+        button {
+            width: 100%;
+            margin-top: 15px;
+            padding: 6px;
+            background-color: lightblue;
+            border: 1px solid black;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        button:hover {
+            background-color: #add8e6;
+        }
+
+        .success {
+            margin-top: 10px;
+            color: green;
+            text-align: center;
+            font-size: 14px;
+        }
+    </style>
 </head>
+
 <body>
     <div class="form">
-        <form>
+        <h1>Student Registration System</h1>
+        <form onsubmit="return validateForm()">
+
             <label for="username">Name:</label>
-            <input type="text" id="username" name="username" required>
+            <input type="text" id="username">
+            <div class="error-text" id="nameError">Name required</div>
 
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="password" required>
+            <label for="email">Email:</label>
+            <input type="email" id="email">
+            <div class="error-text" id="emailError">Email required</div>
 
-            <label for="mobile">Phone No.:</label>
-            <input type="number" id="mobile" name="mobile">
+            <label for="age">Age:</label>
+            <input type="number" id="age">
+            <div class="error-text" id="ageError">Age required</div>
 
             <button type="submit">Submit</button>
+            <div class="success" id="successMsg"></div>
+
         </form>
     </div>
+
+    <script>
+        function validateForm() {
+            let valid = true;
+
+            validateInput("username", "nameError");
+            validateInput("email", "emailError");
+            validateInput("age", "ageError");
+
+            if (valid) {
+                document.getElementById("successMsg").innerText =
+                    "Form submitted successfully!";
+            }
+
+            return valid;
+
+            function validateInput(inputId, errorId) {
+                const input = document.getElementById(inputId);
+                const error = document.getElementById(errorId);
+
+                if (input.value.trim() === "") {
+                    input.classList.add("error-input");
+                    error.style.display = "block";
+                    valid = false;
+                } else {
+                    input.classList.remove("error-input");
+                    error.style.display = "none";
+                }
+            }
+        }
+
+        // remove error when user types
+        document.querySelectorAll("input").forEach(input => {
+            input.addEventListener("input", () => {
+                input.classList.remove("error-input");
+                input.nextElementSibling.style.display = "none";
+            });
+        });
+    </script>
 </body>
 </html>
