@@ -4,40 +4,64 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Basic Bank App</title>
-    <style>
-        body {
-            font-family: Arial;
-        }
+   <style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f2f2f2;
+    }
 
-        .app {
-            width: 300px;
-            margin: 40px auto;
-            padding: 20px;
-            border: 1px solid #ccc;
-        }
+    .app {
+        width: 300px;
+        margin: 50px auto;
+        padding: 20px;
+        background-color: white;
+        border: 1px solid black;
+    }
 
-        h2 {
-            text-align: center;
-        }
+    h2 {
+        text-align: center;
+        margin-bottom: 15px;
+    }
 
-        .balance {
-            margin: 15px 0;
-            font-size: 18px;
-            text-align: center;
-        }
+    .balance {
+        margin: 15px 0;
+        padding: 10px;
+        font-size: 18px;
+        text-align: center;
+        background-color: #e6e6e6;
+        border: 1px solid gray;
+    }
 
-        input {
-            width: 100%;
-            padding: 6px;
-            margin-top: 8px;
-        }
+    input {
+        width: 100%;
+        padding: 6px;
+        margin-top: 10px;
+        border: 1px solid gray;
+        font-size: 14px;
+    }
 
-        button {
-            width: 100%;
-            margin-top: 10px;
-            padding: 6px;
-        }
-    </style>
+    button {
+        width: 100%;
+        margin-top: 10px;
+        padding: 6px;
+        font-size: 14px;
+        border: 1px solid black;
+        cursor: pointer;
+    }
+
+    button:first-of-type {
+        background-color: lightgreen;
+    }
+
+    button:last-of-type {
+        background-color: lightcoral;
+    }
+
+    button:hover {
+        opacity: 0.9;
+    }
+</style>
+
 </head>
 <body>
     <div class="app">
