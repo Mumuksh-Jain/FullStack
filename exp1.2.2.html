@@ -118,38 +118,32 @@
 
 
   <script>
-
     // Product Data
     const products = [
       {
         name: "Headphones",
         price: 49.99,
-        image: "https://picsum.photos/300/200?1"
+        image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=300&h=200&fit=crop"
       },
       {
         name: "Smart Watch",
         price: 129.99,
-        image: "https://picsum.photos/300/200?2"
+        image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=300&h=200&fit=crop"
       },
       {
         name: "Laptop",
         price: 799.99,
-        image: "https://picsum.photos/300/200?3"
+        image: "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=300&h=200&fit=crop"
       },
       {
         name: "Camera",
         price: 459.99,
-        image: "https://picsum.photos/300/200?4"
+        image: "https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?w=300&h=200&fit=crop"
       },
       {
         name: "Speaker",
         price: 89.99,
-        image: "https://picsum.photos/300/200?5"
-      },
-      {
-        name: "Mobile Phone",
-        price: 599.99,
-        image: "https://picsum.photos/300/200?6"
+        image: "https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=300&h=200&fit=crop"
       }
     ];
 
@@ -175,7 +169,6 @@
 
         container.appendChild(card);
 
-        // Animation effect
         setTimeout(() => {
           card.classList.remove("hide");
         }, 50);
@@ -207,8 +200,6 @@
       animateUpdate(sorted);
     }
 
-
-    // Animate Layout Change
     function animateUpdate(newItems) {
       const cards = document.querySelectorAll(".product-card");
 
