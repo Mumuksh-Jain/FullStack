@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Live Character Counter</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body {
+  font-family: Arial, sans-serif;
+  background: #279e9c;
+  padding: 20px;
+}
+
+.container {
+  max-width: 500px;
+  margin: 40px auto;
+  background: white;
+  padding: 25px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+h3 {
+  color: #333;
+  margin-bottom: 15px;
+}
+
+textarea {
+  width: 90%;
+  height: 140px;
+  padding: 12px;
+  resize: none;
+  font-size: 14px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-family: Arial, sans-serif;
+}
+
+textarea:focus {
+  outline: none;
+  border-color: #4a90e2;
+}
+
+.counter {
+  margin-top: 10px;
+  font-size: 14px;
+  color: #666;
+  transition: color 0.3s;
+}
+
+.limit {
+  color: red;
+  font-weight: bold;
+}
+</style>
+</head>
+
+<body>
+<div class="container">
+  <h3>Character Counter</h3>
+  <textarea id="text" maxlength="150" placeholder="Type something..."></textarea>
+  <div id="counter" class="counter">0 / 150 characters</div>
+</div>
+
+<script>
+const textArea = document.getElementById("text");
+const counter = document.getElementById("counter");
+const max = 150;
+
+textArea.addEventListener("input", () => {
+  const length = textArea.value.length;
+  counter.textContent = length + " / " + max + " characters";
+  
+  if (length === max) {
+    counter.classList.add("limit");
+  } else {
+    counter.classList.remove("limit");
+  }
+});
+</script>
+
+</body>
+</html>
