@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Admin Dashboard</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+:root {
+  --bg: #f2f2f2;
+  --text: #000;
+  --card: #ffffff;
+  --border: #cccccc;
+}
+
+body.dark {
+  --bg: #121212;
+  --text: #ffffff;
+  --card: #1e1e1e;
+  --border: #333333;
+}
+
+body {
+  margin: 0;
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: Arial, sans-serif;
+}
+
+.dashboard {
+  display: grid;
+  grid-template-areas:
+    "sidebar header"
+    "sidebar main";
+  grid-template-columns: 200px 1fr;
+  grid-template-rows: 60px 1fr;
+  min-height: 100vh;
+}
+
+.sidebar {
+  grid-area: sidebar;
+  background-color: var(--card);
+  padding: 15px;
+  border-right: 1px solid var(--border);
+}
+
+.header {
+  grid-area: header;
+  background-color: var(--card);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 15px;
+  border-bottom: 1px solid var(--border);
+}
+
+.main {
+  grid-area: main;
+  padding: 15px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 18px;
+}
+
+.card {
+  background-color: var(--card);
+  padding: 18px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+}
+
+.card h4 {
+  margin: 0;
+  font-size: 14px;
+  font-weight: normal;
+}
+
+.card h2 {
+  margin: 10px 0;
+  font-size: 26px;
+}
+
+.card span {
+  font-size: 12px;
+  color: gray;
+}
+
+.card:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12);
+}
+
+button {
+  padding: 6px 12px;
+  background-color: #e0e0e0;
+  border: 1px solid var(--border);
+  cursor: pointer;
+  font-size: 14px;
+}
+
+button:hover {
+  background-color: #d5d5d5;
+}
+
+button:focus {
+  outline: 2px solid #999;
+}
+
+@media (max-width: 600px) {
+  .dashboard {
+    grid-template-areas:
+      "header"
+      "main";
+    grid-template-columns: 1fr;
+    grid-template-rows: 60px 1fr;
+  }
+
+  .sidebar {
+    display: none;
+  }
+}
+</style>
+</head>
+
+<body>
+<div class="dashboard">
+
+  <div class="sidebar">
+    <h3>Admin</h3>
+    <p>Dashboard</p>
+    <p>Users</p>
+    <p>Settings</p>
+  </div>
+
+  <div class="header">
+    <h3>Dashboard</h3>
+    <button onclick="toggleTheme()">Theme</button>
+  </div>
+
+  <div class="main">
+    <div class="card">
+      <h4>Total Users</h4>
+      <h2>120</h2>
+      <span>Registered</span>
+    </div>
+
+    <div class="card">
+      <h4>Active Users</h4>
+      <h2>85</h2>
+      <span>Currently Online</span>
+    </div>
+
+    <div class="card">
+      <h4>Revenue</h4>
+      <h2>₹15k</h2>
+      <span>This Month</span>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const theme = localStorage.getItem("theme");
+if (theme === "dark") document.body.classList.add("dark");
+
+function toggleTheme() {
+  document.body.classList.toggle("dark");
+  localStorage.setItem(
+    "theme",
+    document.body.classList.contains("dark") ? "dark" : "light"
+  );
+}
+</script>
+</body>
+</html>
