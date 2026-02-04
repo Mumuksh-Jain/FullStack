@@ -18,6 +18,11 @@ function App() {
           price="1000"
           image="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=500" 
         />
+        <ProductCard 
+          name="Headphones"
+          price="500"
+          image="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500" 
+        />
       </div>
     </div>
   );
