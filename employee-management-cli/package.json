@@ -1,13 +1,13 @@
 {
   "name": "employee-management-cli",
   "version": "1.0.0",
-  "description": "",
+  "description": "Employee Management System CLI deployed on Render",
   "main": "index.js",
+  "type": "commonjs",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node employee-management-cli/server.js"
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
-  "type": "commonjs"
+  "license": "ISC"
 }
