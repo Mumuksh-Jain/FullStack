@@ -1,7 +1,9 @@
 import { createClient } from 'redis';
 
 // Create a Redis client instance
-const redisClient = createClient();
+const redisClient = createClient({
+  url: process.env.REDIS_URL
+});
 
 // Handle Redis connection errors
 redisClient.on('error', (err) => {
