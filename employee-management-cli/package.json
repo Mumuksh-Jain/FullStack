@@ -4,9 +4,10 @@
   "description": "Employee Management System CLI deployed on Render",
   "main": "index.js",
   "type": "commonjs",
-  "scripts": {
-    "start": "node employee-management-cli/server.js"
-  },
+ "scripts": {
+  "start": "node server.js"
+}
+,
   "keywords": [],
   "author": "",
   "license": "ISC"
