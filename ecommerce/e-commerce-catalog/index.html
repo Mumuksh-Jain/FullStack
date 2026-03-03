@@ -1,177 +1,79 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>E-Commerce Catalog API</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <title>E-Commerce Catalog</title>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Inter', sans-serif;
-    }
-
     body {
-      background: #0f172a;
-      color: #f1f5f9;
+      font-family: Arial, sans-serif;
+      margin: 40px;
+      background: #f4f4f4;
     }
-
-    header {
-      padding: 20px 50px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: #0f172a;
+    h1 {
+      color: #333;
     }
-
-    header h1 {
-      font-size: 20px;
-      color: #38bdf8;
+    button {
+      padding: 8px 12px;
+      margin: 5px 0;
+      cursor: pointer;
     }
-
-    .hero {
-      text-align: center;
-      padding: 100px 20px;
-    }
-
-    .hero h2 {
-      font-size: 42px;
-      margin-bottom: 20px;
-    }
-
-    .hero p {
-      font-size: 18px;
-      color: #94a3b8;
-      margin-bottom: 30px;
-    }
-
-    .btn {
-      display: inline-block;
-      padding: 12px 25px;
-      background: #38bdf8;
-      color: #0f172a;
-      text-decoration: none;
-      border-radius: 8px;
-      font-weight: 600;
-      transition: 0.3s ease;
-    }
-
-    .btn:hover {
-      background: #0ea5e9;
-    }
-
-    .features {
-      padding: 80px 20px;
-      text-align: center;
-      background: #1e293b;
-    }
-
-    .features h3 {
-      font-size: 32px;
-      margin-bottom: 40px;
-    }
-
-    .feature-box {
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 30px;
-    }
-
     .card {
-      background: #0f172a;
-      padding: 30px;
-      border-radius: 12px;
-      width: 280px;
-    }
-
-    .card h4 {
-      margin-bottom: 15px;
-      color: #38bdf8;
-    }
-
-    .endpoints {
-      padding: 80px 20px;
-      text-align: center;
-    }
-
-    .endpoints h3 {
-      font-size: 30px;
-      margin-bottom: 30px;
-    }
-
-    .endpoint-list {
-      background: #1e293b;
-      padding: 30px;
-      border-radius: 12px;
-      display: inline-block;
-      text-align: left;
-    }
-
-    .endpoint-list p {
+      background: white;
+      padding: 15px;
       margin: 10px 0;
-      color: #94a3b8;
-    }
-
-    footer {
-      text-align: center;
-      padding: 30px;
-      background: #0f172a;
-      color: #64748b;
-    }
-
-    @media(max-width: 768px) {
-      .hero h2 {
-        font-size: 32px;
-      }
+      border-radius: 6px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     }
   </style>
 </head>
 <body>
 
-<header>
-  <h1>E-Commerce Catalog API</h1>
-</header>
+<h1>E-Commerce Catalog</h1>
 
-<section class="hero">
-  <h2>Powerful Backend for Your Store</h2>
-  <p>Fast, scalable, and production-ready REST API for managing products and categories.</p>
-  <a href="https://YOUR-RAILWAY-DOMAIN.up.railway.app" class="btn" target="_blank">View Live API</a>
-</section>
+<h2>Categories</h2>
+<button onclick="getCategories()">Load Categories</button>
+<div id="categories"></div>
 
-<section class="features">
-  <h3>Features</h3>
-  <div class="feature-box">
-    <div class="card">
-      <h4>Category Management</h4>
-      <p>Create, update, delete product categories.</p>
-    </div>
-    <div class="card">
-      <h4>Product Management</h4>
-      <p>Full CRUD support for products with MongoDB.</p>
-    </div>
-    <div class="card">
-      <h4>Cloud Hosted</h4>
-      <p>Deployed on Railway with MongoDB Atlas.</p>
-    </div>
-  </div>
-</section>
+<h2>Products</h2>
+<button onclick="getProducts()">Load Products</button>
+<div id="products"></div>
 
-<section class="endpoints">
-  <h3>API Endpoints</h3>
-  <div class="endpoint-list">
-    <p>GET /api/categories</p>
-    <p>POST /api/categories</p>
-    <p>GET /api/products</p>
-    <p>POST /api/products</p>
-  </div>
-</section>
+<script>
+const BASE_URL = "https://your-domain.up.railway.app"; // 🔥 replace this
 
-<footer>
-  © 2026 E-Commerce Catalog API | Built with Node.js & MongoDB
-</footer>
+async function getCategories() {
+  const res = await fetch(`${BASE_URL}/api/categories`);
+  const data = await res.json();
+
+  const container = document.getElementById("categories");
+  container.innerHTML = "";
+
+  data.forEach(cat => {
+    container.innerHTML += `
+      <div class="card">
+        <strong>${cat.name}</strong>
+        <p>${cat.description || ""}</p>
+      </div>
+    `;
+  });
+}
+
+async function getProducts() {
+  const res = await fetch(`${BASE_URL}/api/products`);
+  const data = await res.json();
+
+  const container = document.getElementById("products");
+  container.innerHTML = "";
+
+  data.forEach(prod => {
+    container.innerHTML += `
+      <div class="card">
+        <strong>${prod.name}</strong>
+        <p>Price: $${prod.price}</p>
+      </div>
+    `;
+  });
+}
+</script>
 
 </body>
 </html>
