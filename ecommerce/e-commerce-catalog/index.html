@@ -1,144 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>E-Commerce Catalog</title>
-
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { background: #f5f5f0; font-family: 'JetBrains Mono', monospace; display: flex; flex-direction: column; min-height: 100vh; }
-
-    nav {
-      padding: 20px 40px;
-      border-bottom: 1px solid #e0e0d8;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .logo { font-size: 13px; letter-spacing: 0.15em; color: #c0392b; text-transform: uppercase; }
-
-    .status { display: flex; align-items: center; gap: 8px; font-size: 11px; color: #999; }
-    .dot { width: 8px; height: 8px; border-radius: 50%; background: #ccc; animation: pulse 2s infinite; }
-    .dot.online { background: #27ae60; }
-    .dot.offline { background: #e74c3c; }
-    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.5} }
-
-    main {
-      flex: 1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 40px;
-    }
-
-    .card {
-      background: white;
-      border: 1px solid #e0e0d8;
-      width: 100%;
-      max-width: 520px;
-    }
-
-    .card-header {
-      padding: 20px 24px;
-      border-bottom: 1px solid #e0e0d8;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .card-title { font-size: 12px; color: #1a1a1a; letter-spacing: 0.1em; text-transform: uppercase; }
-
-    .method-badge {
-      background: #c0392b;
-      color: white;
-      font-size: 10px;
-      padding: 3px 10px;
-      letter-spacing: 0.1em;
-    }
-
-    .url-bar {
-      padding: 16px 24px;
-      border-bottom: 1px solid #e0e0d8;
-      font-size: 12px;
-      color: #777;
-      background: #fafaf8;
-      word-break: break-all;
-    }
-
-    .url-bar span { color: #1a1a1a; }
-    .url-bar .endpoint-highlight { color: #c0392b; font-weight: 700; }
-
-    .card-body { padding: 24px; }
-
-    .input-label {
-      font-size: 10px;
-      color: #aaa;
-      text-transform: uppercase;
-      letter-spacing: 0.2em;
-      margin-bottom: 8px;
-    }
-
-    .endpoint-input, .body-input, .method-select {
-      width: 100%;
-      border: 1px solid #e0e0d8;
-      background: #fafaf8;
-      padding: 12px 16px;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 13px;
-      color: #1a1a1a;
-      margin-bottom: 16px;
-      outline: none;
-      transition: border-color 0.2s;
-    }
-
-    .endpoint-input:focus, .body-input:focus, .method-select:focus { border-color: #c0392b; }
-
-    .send-btn {
-      width: 100%;
-      background: #1a1a1a;
-      color: white;
-      border: none;
-      padding: 14px;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 12px;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      cursor: pointer;
-      transition: background 0.2s;
-      margin-bottom: 20px;
-    }
-
-    .send-btn:hover { background: #c0392b; }
-    .send-btn:disabled { background: #ccc; cursor: not-allowed; }
-
-    .response-label {
-      font-size: 10px;
-      color: #aaa;
-      text-transform: uppercase;
-      letter-spacing: 0.2em;
-      margin-bottom: 8px;
-    }
-
-    #response-box {
-      background: #1a1a1a;
-      color: #27ae60;
-      font-size: 12px;
-      padding: 16px;
-      min-height: 90px;
-      white-space: pre-wrap;
-      line-height: 1.8;
-    }
-
-    footer {
-      padding: 20px 40px;
-      border-top: 1px solid #e0e0d8;
-      text-align: center;
-      font-size: 11px;
-      color: #bbb;
-    }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>E-Commerce API Explorer</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'JetBrains Mono', monospace; background:#f5f5f0; display:flex; flex-direction:column; min-height:100vh; }
+  nav { padding:20px 40px; border-bottom:1px solid #e0e0d8; display:flex; justify-content:space-between; align-items:center; }
+  .logo { font-size:13px; letter-spacing:0.15em; color:#c0392b; text-transform:uppercase; }
+  .status { display:flex; align-items:center; gap:8px; font-size:11px; color:#999; }
+  .dot { width:8px; height:8px; border-radius:50%; background:#ccc; animation:pulse 2s infinite; }
+  .dot.online { background:#27ae60; }
+  .dot.offline { background:#e74c3c; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.5} }
+  main { flex:1; display:flex; align-items:center; justify-content:center; padding:40px; }
+  .card { background:white; border:1px solid #e0e0d8; width:100%; max-width:520px; }
+  .card-header { padding:20px 24px; border-bottom:1px solid #e0e0d8; display:flex; justify-content:space-between; align-items:center; }
+  .card-title { font-size:12px; color:#1a1a1a; letter-spacing:0.1em; text-transform:uppercase; }
+  .method-badge { background:#c0392b; color:white; font-size:10px; padding:3px 10px; letter-spacing:0.1em; }
+  .url-bar { padding:16px 24px; border-bottom:1px solid #e0e0d8; font-size:12px; color:#777; background:#fafaf8; word-break:break-all; }
+  .url-bar span { color:#1a1a1a; }
+  .url-bar .endpoint-highlight { color:#c0392b; font-weight:700; }
+  .card-body { padding:24px; }
+  .input-label { font-size:10px; color:#aaa; text-transform:uppercase; letter-spacing:0.2em; margin-bottom:8px; }
+  .endpoint-input, .body-input, .method-select { width:100%; border:1px solid #e0e0d8; background:#fafaf8; padding:12px 16px; font-family:'JetBrains Mono', monospace; font-size:13px; color:#1a1a1a; margin-bottom:16px; outline:none; transition:border-color 0.2s; }
+  .endpoint-input:focus, .body-input:focus, .method-select:focus { border-color:#c0392b; }
+  .send-btn { width:100%; background:#1a1a1a; color:white; border:none; padding:14px; font-family:'JetBrains Mono', monospace; font-size:12px; letter-spacing:0.15em; text-transform:uppercase; cursor:pointer; transition:background 0.2s; margin-bottom:20px; }
+  .send-btn:hover { background:#c0392b; }
+  .send-btn:disabled { background:#ccc; cursor:not-allowed; }
+  .response-label { font-size:10px; color:#aaa; text-transform:uppercase; letter-spacing:0.2em; margin-bottom:8px; }
+  #response-box { background:#1a1a1a; color:#27ae60; font-size:12px; padding:16px; min-height:90px; white-space:pre-wrap; line-height:1.8; }
+  footer { padding:20px 40px; border-top:1px solid #e0e0d8; text-align:center; font-size:11px; color:#bbb; }
+</style>
 </head>
 <body>
 
@@ -157,7 +51,7 @@
       <span class="method-badge" id="method-badge">GET</span>
     </div>
     <div class="url-bar">
-      <span id="base-display"></span><span class="endpoint-highlight" id="url-endpoint">/</span>
+      <span id="base-display"></span><span class="endpoint-highlight" id="url-endpoint">/api/categories</span>
     </div>
     <div class="card-body">
       <div class="input-label">Endpoint</div>
@@ -183,75 +77,76 @@
 <footer>e-commerce-catalog · API explorer</footer>
 
 <script>
-const BASE = "https://fullstack-production-f008.up.railway.app/"; // update as needed
+const BASE = "https://fullstack-production-f008.up.railway.app/";
 
-  // status indicator
-  async function checkStatus() {
-    const dot = document.getElementById('dot');
-    const el = document.getElementById('status-text');
-    try {
-      await fetch(BASE + '/', { signal: AbortSignal.timeout(4000) });
+// Status check
+async function checkStatus() {
+  const dot = document.getElementById('dot');
+  const el = document.getElementById('status-text');
+  try {
+    const res = await fetch(BASE + 'api/categories', { signal: AbortSignal.timeout(4000) });
+    if (res.ok) {
       dot.className = 'dot online';
       el.textContent = 'API Online';
       el.style.color = '#27ae60';
-    } catch {
-      dot.className = 'dot offline';
-      el.textContent = 'API Offline';
-      el.style.color = '#e74c3c';
-    }
+    } else throw new Error('API responded with error');
+  } catch {
+    dot.className = 'dot offline';
+    el.textContent = 'API Offline';
+    el.style.color = '#e74c3c';
   }
+}
 
-  function updateUrl() {
-    const ep = document.getElementById('endpoint-input').value || '/';
-    document.getElementById('url-endpoint').textContent = ep;
-  }
+function updateUrl() {
+  const ep = document.getElementById('endpoint-input').value || '/api/categories';
+  document.getElementById('url-endpoint').textContent = ep;
+}
 
-  function updateMethod() {
-    const method = document.getElementById('method-select').value;
-    document.getElementById('method-badge').textContent = method;
-    const bodySec = document.getElementById('body-section');
-    bodySec.style.display = ['POST','PUT','PATCH'].includes(method) ? 'block' : 'none';
-  }
+function updateMethod() {
+  const method = document.getElementById('method-select').value;
+  document.getElementById('method-badge').textContent = method;
+  document.getElementById('body-section').style.display = ['POST','PUT','PATCH'].includes(method) ? 'block' : 'none';
+}
 
-  async function sendRequest() {
-    const ep = document.getElementById('endpoint-input').value.trim();
-    if (!ep) return;
-    const method = document.getElementById('method-select').value;
-    const box = document.getElementById('response-box');
-    const btn = document.getElementById('send-btn');
-    btn.disabled = true;
-    btn.textContent = 'Sending...';
-    box.style.color = '#f39c12';
-    box.textContent = '// loading...';
-    const t = Date.now();
-    try {
-      const opts = { method };
-      if (['POST','PUT','PATCH'].includes(method)) {
-        const body = document.getElementById('body-input').value;
-        if (body) {
-          opts.body = body;
-          opts.headers = { 'Content-Type': 'application/json' };
-        }
+async function sendRequest() {
+  const ep = document.getElementById('endpoint-input').value.trim();
+  if (!ep) return;
+  const method = document.getElementById('method-select').value;
+  const box = document.getElementById('response-box');
+  const btn = document.getElementById('send-btn');
+  btn.disabled = true;
+  btn.textContent = 'Sending...';
+  box.style.color = '#f39c12';
+  box.textContent = '// loading...';
+  const t = Date.now();
+  try {
+    const opts = { method };
+    if (['POST','PUT','PATCH'].includes(method)) {
+      const body = document.getElementById('body-input').value;
+      if (body) {
+        opts.body = body;
+        opts.headers = { 'Content-Type': 'application/json' };
       }
-      const url = BASE + (ep.startsWith('/') ? ep : '/' + ep);
-      const res = await fetch(url, opts);
-      const ms = Date.now() - t;
-      let bodyText = '';
-      try { bodyText = JSON.stringify(await res.json(), null, 2); } catch { bodyText = await res.text(); }
-      box.style.color = res.ok ? '#27ae60' : '#e74c3c';
-      box.textContent = `HTTP ${res.status}  ·  ${ms}ms\n\n${bodyText || '(empty)'}`;
-    } catch (e) {
-      box.style.color = '#e74c3c';
-      box.textContent = `Error: ${e.message}`;
     }
-    btn.disabled = false;
-    btn.textContent = 'Send Request';
+    const url = BASE + (ep.startsWith('/') ? ep.slice(1) : ep);
+    const res = await fetch(url, opts);
+    const ms = Date.now() - t;
+    let bodyText = '';
+    try { bodyText = JSON.stringify(await res.json(), null, 2); } catch { bodyText = await res.text(); }
+    box.style.color = res.ok ? '#27ae60' : '#e74c3c';
+    box.textContent = `HTTP ${res.status}  ·  ${ms}ms\n\n${bodyText || '(empty)'}`;
+  } catch (e) {
+    box.style.color = '#e74c3c';
+    box.textContent = `Error: ${e.message}`;
   }
+  btn.disabled = false;
+  btn.textContent = 'Send Request';
+}
 
-  // initialize
-  document.getElementById('base-display').textContent = BASE;
-  checkStatus();
-  updateUrl();
+// initialize
+document.getElementById('base-display').textContent = BASE;
+checkStatus();
+updateUrl();
 </script>
 
 </body>
