@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Redis Lock — Distributed Locking API</title>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Syne:wght@700;800&display=swap" rel="stylesheet"/>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: #f5f5f0; color: #1a1a1a; font-family: 'Syne', sans-serif; }
+    nav { padding: 24px 60px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e0e0d8; }
+    .logo { font-family: 'JetBrains Mono', monospace; font-size: 13px; letter-spacing: 0.15em; color: #c0392b; text-transform: uppercase; }
+    .status { display: flex; align-items: center; gap: 8px; font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #999; }
+    .dot { width: 8px; height: 8px; border-radius: 50%; background: #27ae60; animation: pulse 2s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+    .hero { padding: 80px 60px 60px; border-bottom: 1px solid #e0e0d8; }
+    .hero-tag { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.3em; color: #c0392b; text-transform: uppercase; margin-bottom: 20px; }
+    .hero h1 { font-size: clamp(48px, 8vw, 100px); font-weight: 800; line-height: 0.95; letter-spacing: -0.03em; max-width: 700px; }
+    .hero h1 span { color: #c0392b; }
+    .hero p { font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #777; max-width: 480px; margin-top: 28px; line-height: 1.9; }
+    .hero-btn { display: inline-block; margin-top: 36px; background: #1a1a1a; color: #f5f5f0; padding: 14px 32px; font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none; transition: background 0.2s; }
+    .hero-btn:hover { background: #c0392b; }
+    .stats { display: grid; grid-template-columns: repeat(4, 1fr); border-bottom: 1px solid #e0e0d8; }
+    .stat { padding: 40px 60px; border-right: 1px solid #e0e0d8; }
+    .stat:last-child { border-right: none; }
+    .stat-num { font-size: 42px; font-weight: 800; color: #c0392b; line-height: 1; }
+    .stat-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #999; text-transform: uppercase; letter-spacing: 0.15em; margin-top: 6px; }
+    .demo { padding: 80px 60px; border-bottom: 1px solid #e0e0d8; }
+    .demo-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.3em; color: #c0392b; text-transform: uppercase; margin-bottom: 12px; }
+    .demo h2 { font-size: 36px; font-weight: 800; margin-bottom: 40px; letter-spacing: -0.02em; }
+    .demo-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+    .terminal { background: #1a1a1a; font-family: 'JetBrains Mono', monospace; font-size: 12px; }
+    .terminal-bar { padding: 10px 16px; border-bottom: 1px solid #2e2e2e; display: flex; gap: 6px; align-items: center; }
+    .t-dot { width: 9px; height: 9px; border-radius: 50%; }
+    .terminal-body { padding: 20px; min-height: 220px; color: #aaa; line-height: 2; }
+    .terminal-body .g { color: #27ae60; }
+    .terminal-body .r { color: #e74c3c; }
+    .terminal-body .y { color: #f39c12; }
+    .terminal-body .w { color: #eee; }
+    .api-buttons { display: flex; flex-direction: column; gap: 12px; }
+    .api-btn { background: white; border: 1px solid #e0e0d8; padding: 14px 20px; font-family: 'JetBrains Mono', monospace; font-size: 12px; cursor: pointer; text-align: left; display: flex; align-items: center; gap: 12px; transition: border-color 0.2s; color: #1a1a1a; }
+    .api-btn:hover { border-color: #c0392b; }
+    .method { background: #c0392b; color: white; padding: 2px 8px; font-size: 10px; letter-spacing: 0.1em; }
+    .response-label { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: #aaa; text-transform: uppercase; letter-spacing: 0.2em; margin-bottom: 6px; }
+    #response-box { background: #1a1a1a; color: #27ae60; font-family: 'JetBrains Mono', monospace; font-size: 12px; padding: 16px; min-height: 100px; white-space: pre-wrap; line-height: 1.7; }
+    footer { padding: 32px 60px; display: flex; justify-content: space-between; align-items: center; }
+    footer span { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #aaa; }
+    footer a { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #aaa; text-decoration: none; text-transform: uppercase; letter-spacing: 0.1em; }
+    footer a:hover { color: #c0392b; }
+    @media (max-width: 768px) {
+      nav, .hero, .demo, footer { padding: 24px; }
+      .stats { grid-template-columns: repeat(2, 1fr); }
+      .stat { padding: 28px 24px; }
+      .demo-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">Redis<span style="color:#1a1a1a">Lock</span></div>
+  <div class="status">
+    <div class="dot"></div>
+    <span id="status-text">checking...</span>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-tag">// Distributed Locking Mechanism</div>
+  <h1>No Race<br><span>Conditions.</span></h1>
+  <p>A Redis + Express API that prevents double bookings under concurrent load using atomic distributed locking.</p>
+  <a href="#demo" class="hero-btn">Try the API →</a>
+</section>
+
+<div class="stats">
+  <div class="stat"><div class="stat-num">15</div><div class="stat-label">Requests / sec</div></div>
+  <div class="stat"><div class="stat-num">6ms</div><div class="stat-label">Avg Response</div></div>
+  <div class="stat"><div class="stat-num">300</div><div class="stat-label">Total Requests</div></div>
+  <div class="stat"><div class="stat-num">0</div><div class="stat-label">Double Bookings</div></div>
+</div>
+
+<section class="demo" id="demo">
+  <div class="demo-label">// Live API</div>
+  <h2>Test It Live</h2>
+  <div class="demo-grid">
+    <div class="terminal">
+      <div class="terminal-bar">
+        <div class="t-dot" style="background:#ff5f57"></div>
+        <div class="t-dot" style="background:#febc2e"></div>
+        <div class="t-dot" style="background:#28c840"></div>
+      </div>
+      <div class="terminal-body">
+        <div><span class="r">$</span> <span class="w">curl -X POST .../api/book/1</span></div>
+        <div>&nbsp;</div>
+        <div><span class="g">✓ 200</span> — Booking confirmed</div>
+        <div><span class="y">⚠ 423</span> — Resource locked</div>
+        <div><span class="r">✗ 400</span> — Already booked</div>
+        <div>&nbsp;</div>
+        <div><span class="g">http.codes.200: ..... 1</span></div>
+        <div><span class="r">http.codes.400: ..... 293</span></div>
+        <div><span class="y">http.codes.423: ..... 6</span></div>
+        <div><span class="g">vusers.failed: ...... 0</span></div>
+      </div>
+    </div>
+    <div class="api-buttons">
+      <button class="api-btn" onclick="hit('POST','/api/book/1')">
+        <span class="method">POST</span>/api/book/1
+      </button>
+      <button class="api-btn" onclick="hit('GET','/')">
+        <span class="method" style="background:#2980b9">GET</span>/ &nbsp;health check
+      </button>
+      <div>
+        <div class="response-label">Response</div>
+        <div id="response-box">// Click a button to test...</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span>redis-locking-mechanism · exp 4.3</span>
+  <a href="https://fullstack-production-4c04.up.railway.app" target="_blank">Live API ↗</a>
+</footer>
+
+<script>
+  const BASE = 'https://fullstack-production-4c04.up.railway.app';
+
+  async function hit(method, path) {
+    const box = document.getElementById('response-box');
+    box.style.color = '#f39c12';
+    box.textContent = '// loading...';
+    const t = Date.now();
+    try {
+      const res = await fetch(BASE + path, { method });
+      const ms = Date.now() - t;
+      let body = '';
+      try { body = JSON.stringify(await res.json(), null, 2); } catch { body = await res.text(); }
+      box.style.color = res.ok ? '#27ae60' : '#e74c3c';
+      box.textContent = `HTTP ${res.status}  ·  ${ms}ms\n\n${body || '(empty)'}`;
+    } catch (e) {
+      box.style.color = '#e74c3c';
+      box.textContent = `Error: ${e.message}`;
+    }
+  }
+
+  async function checkStatus() {
+    const el = document.getElementById('status-text');
+    try {
+      await fetch(BASE + '/', { signal: AbortSignal.timeout(3000) });
+      el.textContent = 'API Online';
+      el.style.color = '#27ae60';
+    } catch {
+      el.textContent = 'API Offline';
+      el.style.color = '#e74c3c';
+    }
+  }
+
+  checkStatus();
+
+  document.querySelector('a[href="#demo"]').addEventListener('click', e => {
+    e.preventDefault();
+    document.getElementById('demo').scrollIntoView({ behavior: 'smooth' });
+  });
+</script>
+</body>
+</html>
