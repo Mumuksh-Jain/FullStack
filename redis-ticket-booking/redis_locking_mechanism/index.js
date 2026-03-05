@@ -1,7 +1,7 @@
 import app from './src/app.js';
 import { connectRedis } from './src/config/redis.js';
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT ||8080;
 
 try {
   await connectRedis();
